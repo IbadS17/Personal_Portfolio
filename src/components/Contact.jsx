@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Code, Mail, Github, Linkedin } from "lucide-react";
 import { developerData } from "../src/developerData";
 import emailjs from "@emailjs/browser";
@@ -6,6 +6,26 @@ import emailjs from "@emailjs/browser";
 const Contact = ({ isDarkMode }) => {
   const [status, setStatus] = useState(null);
   const formRef = useRef(null);
+
+  useEffect(() => {
+    const scriptId = "linkedin-badge-script";
+    const existingScript = document.getElementById(scriptId);
+
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.type = "text/javascript";
+    script.async = true;
+    script.src = "https://platform.linkedin.com/badges/js/profile.js";
+    document.body.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  }, [isDarkMode]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
